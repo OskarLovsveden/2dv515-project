@@ -12,8 +12,10 @@ export const getPageDB = (): PageDB => {
   const pageDB = new PageDB();
 
   try {
-    const wordsDir = path.join(__dirname, "wikipedia", "Words");
-    const linksDir = path.join(__dirname, "wikipedia", "Links");
+    console.time("ReadFiles");
+
+    const wordsDir = path.join(__dirname, "..", "data", "Words");
+    const linksDir = path.join(__dirname, "..", "data", "Links");
 
     const subDirs = readdirSync(wordsDir, "utf-8");
     for (const subdir of subDirs) {
@@ -21,7 +23,7 @@ export const getPageDB = (): PageDB => {
       const subdirPathTwo = path.join(linksDir, subdir);
 
       const sd1 = readdirSync(subdirPathOne, "utf-8");
-      const sd2 = readdirSync(subdirPathTwo, "utf-8");
+      // const sd2 = readdirSync(subdirPathTwo, "utf-8");
 
       for (const file of sd1) {
         const r1 = readFileSync(path.join(subdirPathTwo, file), "utf-8");
@@ -47,6 +49,8 @@ export const getPageDB = (): PageDB => {
         pageDB.addPage(page);
       }
     }
+
+    console.timeEnd("ReadFiles");
 
     console.time("PageRank");
     calculatePageRank(pageDB);
