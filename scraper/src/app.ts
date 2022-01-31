@@ -1,5 +1,5 @@
 import WikiPageScraper from "./WikiPageScraper";
-import { createDir } from "./FileCreator";
+import { createFile, createDir } from "./FileCreator";
 
 const run = async () => {
   const mainScraper = new WikiPageScraper(
@@ -12,6 +12,19 @@ const run = async () => {
   createDir("../data/Words/Marvel");
   createDir("../data/Links/Marvel");
   console.timeEnd("CreateDir");
+
+  console.time("CreateFiles");
+  for await (const link of mainScraper.links) {
+    const subScraper = new WikiPageScraper("https://en.wikipedia.org" + link);
+    await subScraper.run();
+
+    const wordsPath = "../data/Words/Marvel/" + link.replace("/wiki/", "");
+    const linksPath = "../data/Links/Marvel/" + link.replace("/wiki/", "");
+
+    createFile(wordsPath, subScraper.words.join(" "));
+    createFile(linksPath, subScraper.links.join("\n"));
+  }
+  console.timeEnd("CreateFiles");
 };
 
 run();
