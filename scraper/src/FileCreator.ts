@@ -15,4 +15,20 @@ const createDir = (path: string): void => {
   }
 };
 
-export { createDir };
+/**
+ * Creates a file at the given path / name.
+ *
+ * @param {string} path the path name / file name
+ * @param {string} content the file contents
+ */
+const createFile = (path: string, content: string) => {
+  try {
+    if (!fs.existsSync(path)) {
+      fs.writeFileSync(path, content, "utf8");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { createDir, createFile };
