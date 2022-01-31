@@ -16,6 +16,25 @@ class WikiPageScraper {
   get words(): string[] {
     return this._words;
   }
+
+  /**
+   * Checks whether a href is valid or not.
+   *
+   * @param {string} href the href to be validated.
+   */
+  private isValid = (href: string): boolean => {
+    return (
+      href.startsWith("/wiki") &&
+      !href.includes("Category:") &&
+      !href.includes("Portal:") &&
+      !href.includes("Help:") &&
+      !href.includes("File:") &&
+      !href.includes("Wikipedia:") &&
+      !href.includes("Template:") &&
+      !href.includes("Template_talk:") &&
+      !href.includes("Special:")
+    );
+  };
 }
 
 export default WikiPageScraper;
