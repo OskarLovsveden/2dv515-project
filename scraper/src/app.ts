@@ -15,9 +15,16 @@ const run = async () => {
   createDir("../data/Links/Marvel");
   console.timeEnd("CreateDir");
 
-  console.time("CreateFiles");
   // Loop links found
-  for await (const link of mainScraper.links) {
+  console.time("CreateFiles");
+
+  // Use these next two lines for a set amount of pages...
+  for (let i = 0; i < 200; i++) {
+    const link = mainScraper.links[i];
+
+    // ... Use this next line for all pages found
+    // for await (const link of mainScraper.links) {
+
     const subScraper = new WikiPageScraper("https://en.wikipedia.org" + link);
     await subScraper.run();
 
